@@ -1,0 +1,71 @@
+<html>
+<head>
+    <style>
+        html,body {
+            background: #000;
+            height: 100%;
+            min-height: 100%;
+            margin: 0;            
+            overflow: hidden;
+            position: relative;
+        }
+
+        .logo {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <img class="logo" src="logo.png" height="200" />
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+        function LogoBounce(logo) {
+            var speed = 300;
+            
+            var containerWidth = $('body').outerWidth();
+            var containerHeight = $('body').outerHeight();
+            var logoWidth = logo.outerWidth();
+            var logoHeight = logo.outerHeight();
+
+            var move = {
+                right: () => {
+                    logo.animate({left: (containerWidth - logoWidth)}, {duration: ((containerWidth/speed) * 1000), queue: false, easing: "linear", complete: () => {
+                        move.left();
+                    }});
+                },
+                left: () => {
+                    logo.animate({left: 0}, {duration: ((containerWidth/speed) * 1000), queue: false, easing: "linear", complete: () => {
+                        move.right();
+                    }});
+                },
+                down: () => {
+                    logo.animate({top: (containerHeight - logoHeight)}, {duration: ((containerHeight/speed) * 1000), queue: false, easing: "linear", complete: () => {
+                        move.up();
+                    }});
+                },
+                up: () => {
+                    logo.animate({top: 0}, {duration: ((containerHeight/speed) * 1000), queue: false, easing: "linear", complete: () => {
+                        move.down();
+                    }});
+                }
+            };
+
+            move.right();
+            move.down();
+            
+            $(window).resize(() => {
+                containerWidth = $('body').outerWidth();
+                containerHeight = $('body').outerHeight();
+            });
+        };
+
+        $(document).ready(() => {
+            LogoBounce($('.logo'));
+        });
+    </script>
+</body>
+</html>
